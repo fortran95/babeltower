@@ -53,13 +53,31 @@ position: absolute;
 </style>
 
 <script type="text/javascript">
+function login(username,password){
+    $.post('authenticate.php',{ 'username':username, 'password':password },
+            function(j){
+                if(j.type == 'failure'){
+                    var desc = '';
+                    if(j.description != null)
+                        desc = j.description;
+                    else if(j.error != null)
+                        desc = j.error.message;
+                    else
+                        desc = '未知错误';
+                    $('#loginForm div[name=message]')
+                    .html(desc)
+                    .addClass('ui-state-error');
+                }
+            },
+           'json');
+}
 $(function(){
     $('#loginForm').dialog({
         buttons: [{
-            click: function(){ alert('here'); },
+            click: function(){ login($('#loginForm input[name=username]').val(), $('#loginForm input[name=password]').val()); },
             text: '登录',
-            modal: true,
         }],
+        modal: true,
         resizable: false,
     });
 });
@@ -67,6 +85,7 @@ $(function(){
 </head>
 <body>
 <div id="loginForm" title="登录">
+<div name="message"></div>
 用户名<input name="username" type="text" required/><br />
 密码<input name="password" type="password" required/>
 </div>
