@@ -4,12 +4,18 @@ function getDialogID(receiver,appendix){
     else
         return 'dialog-' + $.trim(receiver.toLowerCase());
 }
+function constructMessageDisplay(jmsg){
+    var html = '<div>html</div>';
+    return $(html);
+}
 function dialogAddMessage(receiver,jmsg){
     var theframe = $( '#' + getDialogID(receiver) + ' iframe[name=dialog]' );
 
     showDialog(receiver);
 
-    theframe.contents().find('body').append($('<div>hello</div>'));
+    theframe.contents().find('body').append( constructMessageDisplay(jmsg) );
+
+    theframe.contents().scrollTop( theframe.contents().height() );
 }
 function showDialog(receiver){
     var dialogID = getDialogID(receiver);
@@ -23,12 +29,18 @@ function showDialog(receiver){
           .dialog({
             close: function(){ $(this).remove(); },
             autoOpen: false,
-            buttons: [{text:'speak', click:function(){ dialogAddMessage('test','hello'); }}],
+            buttons: [{text:'speak', click:function(){ dialogAddMessage('test', {'sender':'lucifer'} ); }}],
+            minWidth: 400,
+            minHeight: 400,
           })
         $('<iframe>',{
-            width: '90%',
-            height: '80%',
+            width: '95%',
+            height: '85%',
             name: 'dialog',
+        }).appendTo(bDialogID);
+        $('<textarea>',{
+            height: '20%',
+            width: '95%',
         }).appendTo(bDialogID);
     }
     
