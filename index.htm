@@ -56,16 +56,26 @@ position: absolute;
 <script type="text/javascript">
 var token = '';
 var tokenValid = false;
+var pullFailCount = 0;
+var pullFailCount_Max = 3;
 
 function doPull(){
     $.post('pull.php', { 'token':token },
             function(j){
-                if(j.type == null)
-                    return;
                 if(j.type != 'success'){
-                    
+                    if(j.error != null){
+                        switch(j.error.code){
+                            case(-1):
+                                tokenValid = false;
+                                loginSetInfo('会话过期，或被服务器中止。','error');
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 } else {
                 }
+                pullFailCount = 0;
             },
             'json');
 }
@@ -92,10 +102,7 @@ function loginDo(username,password){
                         desc = j.error.message;
                     else
                         desc = '未知错误';
-                    $('#loginForm div[name=message]')
-                    .html(desc)
-                    .removeAttr('style')
-                    .addClass('ui-state-error');
+                    loginSetInfo(desc,'error');
                 } else {
                     $('#loginForm').dialog('close');
                     tokenValid = true;
@@ -105,16 +112,26 @@ function loginDo(username,password){
            'json');
 }
 function loginShow(){
+    pullFailCount = 0;
+    tokenValid = false;
+    token = '';
     $('#loginForm').dialog('open');
+}
+function loginSetInfo(info,type){
+    $('#loginForm div[name=message]')
+        .html(info)
+        .removeAttr('style')
+        .addClass('ui-state-' + type);
 }
 
 function engine(){
-    if(tokenValid == false){
+    if(tokenValid == false || pullFailCount >= pullFailCount_Max){
         loginShow();
         setTimeout(engine,1000);
         return;
     }
-    setTimeout(engine,10000);
+    setTimeout(engine,5000);
+    pullFailCount += 1;
     doPull();
 }
 

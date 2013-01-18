@@ -19,10 +19,10 @@ class token{
         $tokenstr = "{$parts[0]}:{$parts[1]}:{$parts[2]}:{$parts[3]}";
         $gotsign = $parts[4];
 
-        if(!$checkUserKey = $this->getUserKey($parts[0]))
+        if(!$userInfo = $this->getUserInfo($parts[0]))
             return false;
         $checksign = hash_hmac('sha1',$tokenstr,$this->signkey);
-        $checksign = hash_hmac('sha1',$checksign,$checkUserKey);
+        $checksign = hash_hmac('sha1',$checksign,$userInfo['passhash']);
 
         if($checksign != $gotsign)
             return false;
@@ -30,10 +30,13 @@ class token{
         $this->userid = $parts[0];
         $this->username = $parts[1];
 
+        if(time() - $userInfo['lastvisit'] > 60)
+            $this->updateUserPresence($this->userid);
+
         return true;
     }
     public function __toString(){
-        if(!$userkey = $this->getUserKey($this->userid))
+        if(!$userInfo = $this->getUserInfo($this->userid))
             return '';
         # generate token str base
         $tokenstr = implode(':',array($this->userid,
@@ -45,18 +48,25 @@ class token{
         $tokenstr = $tokenstr . ":" . $padding;
 
         $sign = hash_hmac('sha1',$tokenstr,$this->signkey);
-        $sign = hash_hmac('sha1',$sign,$userkey);
+        $sign = hash_hmac('sha1',$sign,$userInfo['passhash']);
         
         $result = $tokenstr . ":" . $sign;
         return $result;
     }
-    private function getUserKey($userid){
+    public function getUserInfo($userid){
         if(!is_numeric($userid))
             return false;
-        $userq = $this->db->querySQL("SELECT passhash FROM users
+        $userq = $this->db->querySQL("SELECT * FROM users
                                       WHERE id='{$userid}'");
         if(count($userq) < 1)
             return false;
-        return $userq[0]['passhash'];
+        return $userq[0];
+    }
+    private function updateUserPresence($userid){        
+        if(!is_numeric($userid))
+            return false;
+        $nowtime = time();
+        $sql = "UPDATE users SET lastvisit='$nowtime' WHERE id='$userid'";
+        $this->db->doSQL($sql);
     }
 }

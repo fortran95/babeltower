@@ -8,10 +8,9 @@ if(!$tokenstr)
 else {
     $token = new token();
     if(!$result = $token->read($tokenstr))
-        $r = new failure('token invalid.');
+        $r = new failure(new Exception('token invalid.',-1));
     else {
         $r = new success(array('username'=>$token->username));
     }
 }
-
 if(isset($r)) die($r->getJSON());
