@@ -8,20 +8,24 @@ function dialog(buddy, buddyID){
         var message = $.trim( $(this.bDialogID + ' textarea' ).val());
         if(message == '' || message.length > 500)
             return;
-        var msgid = messageCenter.push(this.buddyID, message); // TODO make use of this!
-        // TODO put to dialogbox.
+
+        var msgid = messageCenter.push(this.buddyID, message);
+        this.addDisplay(message, msgid);
+
         $(this.bDialogID + ' textarea').val('');
     };
 
-    this.addDisplay = function(jmsg){
-        var theframe = $( $this.bDialogID + '-iframe' );
+    this.addDisplay = function(message,msgid){
         this.show();
-        theframe.contents().find('body').append( constructMessageDisplay(jmsg) );
+        var theframe = $( this.bDialogID + '-iframe' );
+        theframe.contents().find('body').append( this.constructMessageDisplay(message,msgid) );
         theframe.contents().scrollTop( theframe.contents().height() );
     };
 
-    this.constructMessageDisplay = function(jmsg){
-        var html = '<div>html</div>';
+    this.constructMessageDisplay = function(message,msgid){
+        var html = '<div id="local-' + msgid + '">'
+                 + '<strong>我</strong><br />'
+                 + message + '</div>';
         return $(html);
     };
 
@@ -58,7 +62,8 @@ function dialog(buddy, buddyID){
                 of: this.bDialogID,
                 collision: 'none',
                 within: $(this.bDialogID),
-            });
+            }).contents()
+                .find('head').append( $('<link type="text/css" rel="stylesheet" href="static/dialog.css" />') );
 
             $('<textarea>',{
                 width: '98%',
