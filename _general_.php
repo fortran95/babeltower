@@ -24,4 +24,6 @@ include("$basepath/class/token.php");
 include("$basepath/class/time.php");
 include("$basepath/class/result.php");
 include("$basepath/class/messaging.php");
+
+include("$basepath/lib/readvar.php");
 ?>
