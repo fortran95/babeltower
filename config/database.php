@@ -4,6 +4,6 @@ $_database_credentials = array(
     'server'=>'localhost',
     'user'=>'root',
     'password'=>'orxszlyzr',
-    'dbname'=>'pgponline',
+    'dbname'=>'babeltower',
 );
 ?>

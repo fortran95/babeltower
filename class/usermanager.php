@@ -16,14 +16,14 @@ class userManager{
             return -1;
         
         $timediff = time() - $nowtime;
-        if(!($timediff >= 0 && $timediff < 30))
+        if(!($timediff >= -15 && $timediff < 15))
             return -2;
         else {
-            $check = hash_hmac('sha1',$user['passhash'],"$username$time");
+            $check = hash_hmac('sha1',$user['passhash'],"$username$nowtime");
             if($password != $check)
                 return -3;
         }
-        return;# TODO return a token
+        return 'mytoken';# TODO return a token
     }
     public function userNew($username,$password){
         /*
