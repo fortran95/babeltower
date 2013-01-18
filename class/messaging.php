@@ -10,30 +10,45 @@ class messaging{
         
     }
     public function pushMessage($buddyid,$ciphertext,$check){
-        if(false !== $this->userExists($buddyid))
+        if(!$this->userExists($buddyid))
             return -1;
-
         if(strlen($ciphertext) > $this->max_message_length)
             return -2;
 
-        $message = aes_decrypt($ciphertext,$this->token->secret); 
-        # TODO check hash
-        
-        $sql = "INSERT INTO users(username,
-                                  passhash)
-                       VALUES('$username',
-                              '$hashed')";
+        # Check integrity first.
+        $calculatedCheck = hash_hmac('sha1',$ciphertext,$this->token->secret);
+        if($calculatedCheck != $check) return -3;
+
+        # Decrypt now.
+        $message = aes_decrypt($ciphertext,$this->token->secret);
+
+        # now prepare for inserting to database.
+        $message = base64_encode($message);
+        $sendtime = time();
+        $sender = $this->token->userid;
+        $sql = "INSERT INTO single(sender,
+                                   receiver,
+                                   message,
+                                   sendtime)
+                       VALUES('{$sender}',
+                              '{$buddyid}',
+                              '{$message}',
+                              '{$sendtime}')";
         $this->db->doSQL($sql);
         $err = $this->db->lastError();
-        return ($err == '');
+        
+        if($err == '')
+            return true;
+        else
+            return $err;
     }
     private function userExists($userid){
         if(!is_numeric($userid))
             return false;
         $userq = $this->db->querySQL("SELECT * FROM users
-                                      WHERE username='$userid'");
+                                      WHERE id='$userid'");
         if(count($userq) < 1)
             return false;
-        return $userq[0];
+        return true;
     }
 }
