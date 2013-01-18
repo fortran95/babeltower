@@ -29,6 +29,7 @@ class token{
 
         $this->userid = $parts[0];
         $this->username = $parts[1];
+        $this->secret = sha1($userInfo['passhash']);
 
         if(time() - $userInfo['lastvisit'] > 60)
             $this->updateUserPresence($this->userid);

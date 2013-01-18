@@ -5,6 +5,7 @@ function loginDo(username,password){
     var passwordSHA1 = (new jsSHA(password, "TEXT")).getHash("SHA-1","HEX");
     var hmac = (new jsSHA(passwordSHA1, "TEXT")).getHMAC(username + nowtime, "TEXT", "SHA-1", "HEX");
     var checkhash = (new jsSHA(username + nowtime, "TEXT")).getHash("SHA-1","HEX");
+    secret = (new jsSHA(passwordSHA1, "TEXT")).getHash("SHA-1","HEX");
     
     $.post('authenticate.php',{ 'username':username, 'password':hmac, 'nowtime':nowtime, 'check':checkhash },
             function(j){
