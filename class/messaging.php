@@ -9,7 +9,7 @@ class messaging{
     public function pullMessages(){
         
     }
-    public function pushMessage($buddyid,$ciphertext){
+    public function pushMessage($buddyid,$ciphertext,$check){
         if(false !== $this->userExists($buddyid))
             return -1;
 
@@ -17,6 +17,7 @@ class messaging{
             return -2;
 
         $message = aes_decrypt($ciphertext,$this->token->secret); 
+        # TODO check hash
         
         $sql = "INSERT INTO users(username,
                                   passhash)

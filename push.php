@@ -2,6 +2,9 @@
 include(dirname(__FILE__) . "/_general_.php");
 
 $tokenstr = request_var('token');
+$ciphertext = request_var('ciphertext');
+$check = request_var('check');
+$receiver = request_var('receiver');
 
 if(!$tokenstr)
     $r = new failure('token not present.');
