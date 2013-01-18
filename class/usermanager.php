@@ -23,10 +23,9 @@ class userManager{
             if($password != $check)
                 return -3;
         }
-        $token = new token(array(
-                    'username'=>$user['username'],
-                    'id'=>$user['id'],
-                 ));
+        $token = new token();
+        $token->userid = $user['id'];
+        $token->username = $this->decodeUsername($user['username']);
         return sprintf("%s",$token);
     }
     public function userNew($username,$password){
