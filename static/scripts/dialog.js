@@ -1,30 +1,30 @@
-function getDialogID(receiver,appendix){
+function getDialogID(buddy,appendix){
     if(appendix != null)
-        return 'dialog-' + $.trim(receiver.toLowerCase()) + '-' + appendix;
+        return 'dialog-' + $.trim(buddy.toLowerCase()) + '-' + appendix;
     else
-        return 'dialog-' + $.trim(receiver.toLowerCase());
+        return 'dialog-' + $.trim(buddy.toLowerCase());
 }
 function constructMessageDisplay(jmsg){
     var html = '<div>html</div>';
     return $(html);
 }
-function dialogAddMessage(receiver,jmsg){
-    var theframe = $( '#' + getDialogID(receiver) + ' iframe[name=dialog]' );
+function dialogAddMessage(buddy,jmsg){
+    var theframe = $( '#' + getDialogID(buddy) + ' iframe[name=dialog]' );
 
-    showDialog(receiver);
+    showDialog(buddy);
 
     theframe.contents().find('body').append( constructMessageDisplay(jmsg) );
 
     theframe.contents().scrollTop( theframe.contents().height() );
 }
-function showDialog(receiver){
-    var dialogID = getDialogID(receiver);
+function showDialog(buddy){
+    var dialogID = getDialogID(buddy);
     var bDialogID = '#' + dialogID;
 
     if($(bDialogID).size() == 0){
         $('<div>',{
             id: dialogID,
-            title: '与 ' + $.trim(receiver.toLowerCase()) + ' 的聊天',
+            title: '与 ' + $.trim(buddy.toLowerCase()) + ' 的聊天',
         }).appendTo('body')
           .dialog({
             close: function(){ $(this).remove(); },
