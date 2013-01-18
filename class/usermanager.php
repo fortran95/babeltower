@@ -4,7 +4,7 @@ class userManager{
         global $database;
         $this->db = $database;
     }
-    public function authenticate($username,$password){
+    public function authenticate($username,$password,$nowtime){
         /*
          *  Authenticates a user with $username and $password
          *
@@ -13,13 +13,17 @@ class userManager{
          */
         $qu = $this->encodeUsername($username);
         if(false === ($user=$this->userExists($qu)))
-            return false;
-        if($user['passhash'] != hash_hmac('sha1',$password,$user['hmackey']))
-            return false;
-
-        return new user($user['id'],
-                        $this->decodeUsername($user['username']),
-                        $password);
+            return -1;
+        
+        $timediff = time() - $nowtime;
+        if(!($timediff >= 0 && $timediff < 30))
+            return -2;
+        else {
+            $check = hash_hmac('sha1',$user['passhash'],"$username$time");
+            if($password != $check)
+                return -3;
+        }
+        return;# TODO return a token
     }
     public function userNew($username,$password){
         /*
@@ -33,13 +37,10 @@ class userManager{
         $username = $this->encodeUsername($username);
         if(false !== $this->userExists($username))
             return -2;
-        $hmackey = getRandomString(40);
-        $hashed = hash_hmac('sha1',$password,$hmackey);
+        $hashed = sha1('sha1',$password);
         $sql = "INSERT INTO users(username,
-                                  hmackey,
                                   passhash)
                        VALUES('$username',
-                              '$hmackey',
                               '$hashed')";
         $this->db->doSQL($sql);
         $err = $this->db->lastError();

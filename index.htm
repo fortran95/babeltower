@@ -73,9 +73,13 @@ function doPull(){
 function loginDo(username,password){
     var nowtime = Math.round(new Date().getTime()/1000);
 
-    var shaObj = new jsSHA(password, "TEXT");
+    var passwordSHA1 = (new jsSHA(password, "TEXT")).getHash("SHA-1","HEX");
+
+    var shaObj = new jsSHA(passwordSHA1, "TEXT");
     var hmac = shaObj.getHMAC(username + nowtime, "TEXT", "SHA-1", "HEX");
     
+    $('#loginForm input[name=password]').val('');
+
     $.post('authenticate.php',{ 'username':username, 'password':hmac, 'nowtime':nowtime },
             function(j){
                 if(j.type == null)
@@ -94,7 +98,6 @@ function loginDo(username,password){
                     .addClass('ui-state-error');
                 } else {
                     $('#loginForm').dialog('close');
-                    $('#loginForm input[name=password]').val('');
                     tokenValid = true;
                     token = j.data.token;
                 }
