@@ -9,7 +9,7 @@ function constructMessageDisplay(jmsg){
     return $(html);
 }
 function dialogAddMessage(buddy,jmsg){
-    var theframe = $( '#' + getDialogID(buddy) + ' iframe[name=dialog]' );
+    var theframe = $( '#' + getDialogID(buddy) + '-iframe' );
 
     showDialog(buddy);
 
@@ -32,17 +32,39 @@ function showDialog(buddy){
             buttons: [{text:'speak', click:function(){ dialogAddMessage('test', {'sender':'lucifer'} ); }}],
             minWidth: 400,
             minHeight: 400,
-          })
+          });
+
         $('<iframe>',{
-            width: '95%',
+            width: '99%',
             height: '85%',
-            name: 'dialog',
-        }).appendTo(bDialogID);
+            id: dialogID + '-iframe',
+        }).appendTo(bDialogID)
+          .css({
+            position: 'absolute',
+        }).position({
+            my: 'left top',
+            at: 'left top',
+            of: bDialogID,
+            collision: 'none',
+            within: $(bDialogID),
+        });
+
         $('<textarea>',{
-            height: '20%',
-            width: '95%',
+            width: '98%',
+        }).css({
+            resize: 'none',
+            position: 'absolute',
+            top: $(bDialogID + '-iframe').css('height'),
+            left: $(bDialogID + '-iframe').css('left'),
         }).appendTo(bDialogID);
+/*          .position({
+            my: 'left top',
+            at: 'left bottom',
+            of: bDialogID,
+            collision: 'none',
+        });*/
     }
     
-    $('#' + dialogID).dialog('open');
+    $('#' + dialogID)
+        .dialog('open');
 }

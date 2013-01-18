@@ -7,10 +7,6 @@ include("$basepath/config/security.php");
 
 ###############################################################################
 
-# Below inclusions, defining classes that may exists in sessions, should be
-# done with priority.
-include("$basepath/class/user.php");
-
 # Connect Database
 include("$basepath/class/database.php");
 switch($_database_credentials['type']){
@@ -27,5 +23,5 @@ include("$basepath/class/objecthash.php");
 include("$basepath/class/token.php");
 include("$basepath/class/time.php");
 include("$basepath/class/result.php");
-
+include("$basepath/class/messaging.php");
 ?>
