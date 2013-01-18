@@ -1,6 +1,7 @@
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 /*  AES implementation in JavaScript (c) Chris Veness 2005-2012                                   */
 /*   - see http://csrc.nist.gov/publications/PubsFIPS.html#197                                    */
+/*   - see http://www.movable-type.co.uk/scripts/aes.html                                         */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 
 var Aes = {};  // Aes namespace
