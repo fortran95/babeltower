@@ -15,6 +15,14 @@ messageCenter.confirmSent = function(msgid){
             return;
         }
 }
+messageCenter.confirmDead = function(msgid){
+    for(i=0;i<messageCenter.sentQueue.length;i++)
+        if(messageCenter.sentQueue[i].id == msgid){
+            messageCenter.sentQueue[i].dead = true;
+            return;
+        }
+}
+
 messageCenter.querySent = function(msgid){
     for(i=0;i<messageCenter.sentQueue;i++)
         if(messageCenter.sentQueue[i].id == msgid)
@@ -28,6 +36,7 @@ messageCenter.push = function(receiver,message){
         'receiver': receiver,
         'text': message,
         'id': myID,
+        'dead': false,
     })
     return myID;
 }
@@ -45,7 +54,12 @@ messageCenter.pop = function(){
             'receiver': message.receiver,
             'check': hmac,
         },function(j){
-            messageCenter.confirmSent(message.id);
+            if(j.type == 'success')
+                if(j.data.check == hmac){
+                    messageCenter.confirmSent(message.id);
+                    return;
+                }
+            messageCenter.confirmDead(message.id);
         },'json');
     }
     return messageCenter.sendingQueue.length;

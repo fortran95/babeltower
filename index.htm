@@ -76,7 +76,7 @@ $(function(){
         click: function(){ alert('尚未制作，请联系作者。'); },
         text: '修改密码',
     }]);
-    $('#talkTest').click( function(){ showDialog('test',2); } );
+    $('#talkTest').click( function(){ new dialog('test',2).show(); } );
 
     engine();
 });
