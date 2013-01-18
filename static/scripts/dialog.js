@@ -23,9 +23,14 @@ function dialog(buddy, buddyID){
     };
 
     this.constructMessageDisplay = function(message,msgid){
-        var html = '<div id="local-' + msgid + '">'
-                 + '<strong>我</strong><br />'
-                 + message + '</div>';
+        if(msgid != undefined)
+            var html = '<div id="local-' + msgid + '">'
+                     + '<strong>我</strong><br />'
+                     + message + '</div>';
+        else
+            var html = '<div>'
+                     + '<strong>' + this.buddy + '</strong><br />'
+                     + message + '</div>';
         return $(html);
     };
 
@@ -62,8 +67,7 @@ function dialog(buddy, buddyID){
                 of: this.bDialogID,
                 collision: 'none',
                 within: $(this.bDialogID),
-            }).contents()
-                .find('head').append( $('<link type="text/css" rel="stylesheet" href="static/dialog.css" />') );
+            });
 
             $('<textarea>',{
                 width: '98%',

@@ -76,7 +76,9 @@ $(function(){
         click: function(){ alert('尚未制作，请联系作者。'); },
         text: '修改密码',
     }]);
+
     $('#talkTest').click( function(){ new dialog('test',2).show(); } );
+    $('#fakeRemote').click( function(){ new dialog('test',2).addDisplay('hello'); } );
 
     engine();
 });
@@ -101,6 +103,7 @@ body{
 </div>
 
 <button id="talkTest">和test聊天</button>
+<button id="fakeRemote">向test的聊天对话框里伪造数据</button>
 
 </body>
 </html>
