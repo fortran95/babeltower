@@ -1,19 +1,18 @@
 <?
 class messaging{
-    public function __construct(){
+    public function __construct($token){
         global $database;
         $this->db = $database;
+        $this->token = $token;
     }
-    public function pullMessages($userid){
+    public function pullMessages(){
         
     }
-    public function pushMessage($userid,$buddyid,$message){
-        if(!$this->validateUsername($username))
+    public function pushMessage($buddyid,$message){
+        if(false !== $this->userExists($buddyid))
             return -1;
-        $username = $this->encodeUsername($username);
-        if(false !== $this->userExists($username))
-            return -2;
-        $hashed = sha1($password);
+
+        
         $sql = "INSERT INTO users(username,
                                   passhash)
                        VALUES('$username',

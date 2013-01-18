@@ -164,10 +164,6 @@ class Aes {
 } 
  
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
-?>
-
-<?php
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 /*  AES counter (CTR) mode implementation in PHP                                                  */
 /*    (c) Chris Veness 2005-2011 www.movable-type.co.uk/scripts                                   */
 /*    Right of free use is granted for all commercial or non-commercial use providing this        */
