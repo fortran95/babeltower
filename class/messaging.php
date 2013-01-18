@@ -16,7 +16,7 @@ class messaging{
             return -2;
 
         # Check integrity first.
-        $calculatedCheck = hash_hmac('sha1',$ciphertext,$this->token->secret);
+        $calculatedCheck = hash_hmac('sha1',$buddyid . $ciphertext,$this->token->secret);
         if($calculatedCheck != $check) return -3;
 
         # Decrypt now.

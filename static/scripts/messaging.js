@@ -5,7 +5,7 @@ var messageCenter = {};
 
 messageCenter.doPushMessage = function(receiver,message){
     var ciphertext = aes_encrypt(message,secret);
-    var hmac = (new jsSHA(ciphertext, "TEXT")).getHMAC(secret,"TEXT","SHA-1","HEX");
+    var hmac = (new jsSHA(receiver + ciphertext, "TEXT")).getHMAC(secret,"TEXT","SHA-1","HEX");
     $.post('push.php',{
         'token': token,
         'ciphertext': ciphertext,
