@@ -53,10 +53,13 @@ position: absolute;
 </style>
 
 <script type="text/javascript">
-function login(username,password){
+var token = '';
+var tokenValid = false;
+
+function loginDo(username,password){
     $.post('authenticate.php',{ 'username':username, 'password':password },
             function(j){
-                if(j.type == 'failure'){
+                if(j.type != 'success'){
                     var desc = '';
                     if(j.description != null)
                         desc = j.description;
@@ -67,19 +70,38 @@ function login(username,password){
                     $('#loginForm div[name=message]')
                     .html(desc)
                     .addClass('ui-state-error');
+                } else {
+                    $('#loginForm').dialog('close');
+                    $('#loginForm input[name=password]').val('');
+                    tokenValid = true;
+                    token = j.data.token;
                 }
             },
            'json');
 }
+function loginShow(){
+    $('#loginForm').dialog('open');
+}
+
+function engine(){
+    setTimeout(engine,2000);
+    if(tokenValid == false){
+        loginShow();
+        return;
+    }
+}
+
 $(function(){
     $('#loginForm').dialog({
         buttons: [{
-            click: function(){ login($('#loginForm input[name=username]').val(), $('#loginForm input[name=password]').val()); },
+            click: function(){ loginDo($('#loginForm input[name=username]').val(), $('#loginForm input[name=password]').val()); },
             text: '登录',
         }],
+        autoOpen: false,
         modal: true,
         resizable: false,
     });
+    engine();
 });
 </script>
 </head>
