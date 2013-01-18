@@ -23,7 +23,11 @@ class userManager{
             if($password != $check)
                 return -3;
         }
-        return 'mytoken';# TODO return a token
+        $token = new token(array(
+                    'username'=>$user['username'],
+                    'id'=>$user['id'],
+                 ));
+        return sprintf("%s",$token);
     }
     public function userNew($username,$password){
         /*

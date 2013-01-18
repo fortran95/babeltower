@@ -23,6 +23,8 @@ switch($_database_credentials['type']){
 }
 
 include("$basepath/class/usermanager.php");
+include("$basepath/class/objecthash.php");
+include("$basepath/class/token.php");
 include("$basepath/class/time.php");
 include("$basepath/class/result.php");
 
