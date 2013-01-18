@@ -17,7 +17,20 @@ function dialogAddMessage(buddy,jmsg){
 
     theframe.contents().scrollTop( theframe.contents().height() );
 }
-function showDialog(buddy){
+function dialogISay(buddy,buddyID){
+    var dialogID = getDialogID(buddy);
+    var bDialogID = '#' + dialogID;
+    var message = $.trim($(bDialogID + ' textarea').val());
+
+    if(message == '' || message.length > 500)
+        return;
+
+    var msgid = messageCenter.push(buddyID, message); // TODO make use of this!
+    // TODO put to dialogbox.
+
+    $(bDialogID + ' textarea').val('');
+}
+function showDialog(buddy,buddyID){
     var dialogID = getDialogID(buddy);
     var bDialogID = '#' + dialogID;
 
@@ -29,7 +42,7 @@ function showDialog(buddy){
           .dialog({
             close: function(){ $(this).remove(); },
             autoOpen: false,
-            buttons: [{text:'speak', click:function(){ messageCenter.push(2,'hello'); }, }],
+            buttons: [{text:'speak', click: function(){dialogISay(buddy,buddyID);}, }],
             minWidth: 400,
             minHeight: 400,
           });
