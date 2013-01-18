@@ -10,6 +10,7 @@
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.0.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+<script type="text/javascript" src="scripts/hash/sha.js"></script>
 
 <style>
 body{
@@ -56,9 +57,26 @@ position: absolute;
 var token = '';
 var tokenValid = false;
 
+function doPull(){
+    $.post('pull.php', { 'token':token },
+            function(j){
+                if(j.type == null)
+                    return;
+                if(j.type != 'success'){
+                    
+                } else {
+                }
+            },
+            'json');
+}
+
 function loginDo(username,password){
+    var nowtime = Math.round(new Date().getTime()/1000);
+    alert(nowtime);
     $.post('authenticate.php',{ 'username':username, 'password':password },
             function(j){
+                if(j.type == null)
+                    return;
                 if(j.type != 'success'){
                     var desc = '';
                     if(j.description != null)
@@ -69,6 +87,7 @@ function loginDo(username,password){
                         desc = '未知错误';
                     $('#loginForm div[name=message]')
                     .html(desc)
+                    .removeAttr('style')
                     .addClass('ui-state-error');
                 } else {
                     $('#loginForm').dialog('close');
@@ -84,11 +103,13 @@ function loginShow(){
 }
 
 function engine(){
-    setTimeout(engine,2000);
     if(tokenValid == false){
         loginShow();
+        setTimeout(engine,1000);
         return;
     }
+    setTimeout(engine,10000);
+    doPull();
 }
 
 $(function(){
