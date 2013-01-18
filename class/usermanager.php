@@ -16,7 +16,7 @@ class userManager{
             return -1;
         
         $timediff = time() - $nowtime;
-        if(!($timediff >= -15 && $timediff < 15))
+        if(!($timediff >= -10 && $timediff < 30))
             return -2;
         else {
             $check = hash_hmac('sha1',$user['passhash'],"$username$nowtime");
@@ -27,6 +27,20 @@ class userManager{
         $token->userid = $user['id'];
         $token->username = $this->decodeUsername($user['username']);
         return sprintf("%s",$token);
+    }
+    public function userChangePassword($userid,$newpass){
+        /*
+         *  Change User Password
+         *
+         *  Provide User ID rather than name!
+         *  This function does NOT verify user's old password.
+         */
+        if(!is_numeric($userid)) return false;
+        $hashed = sha1($newpass);
+        $sql = "UPDATE users SET passhash='$hashed' WHERE id='$userid'";
+        $this->db->doSQL($sql);
+        $err = $this->db->lastError();
+        return ($err == '');
     }
     public function userNew($username,$password){
         /*
@@ -40,7 +54,7 @@ class userManager{
         $username = $this->encodeUsername($username);
         if(false !== $this->userExists($username))
             return -2;
-        $hashed = sha1('sha1',$password);
+        $hashed = sha1($password);
         $sql = "INSERT INTO users(username,
                                   passhash)
                        VALUES('$username',
