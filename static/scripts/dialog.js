@@ -29,7 +29,7 @@ function showDialog(buddy){
           .dialog({
             close: function(){ $(this).remove(); },
             autoOpen: false,
-            buttons: [{text:'speak', click:function(){ messageCenter.doPushMessage(2,'hello'); }, }],
+            buttons: [{text:'speak', click:function(){ messageCenter.push(2,'hello'); }, }],
             minWidth: 400,
             minHeight: 400,
           });

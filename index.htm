@@ -53,7 +53,11 @@ function engine(){
         setTimeout(engine,1000);
         return;
     }
-    setTimeout(engine,5000);
+    var queuedLength = messageCenter.pop();
+    if(queuedLength > 0)
+        setTimeout(engine,1000);
+    else
+        setTimeout(engine,10000);
     pullFailCount += 1;
     doPull();
 }
