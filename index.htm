@@ -11,9 +11,11 @@
 <script type="text/javascript" src="static/scripts/jquery.js"></script>
 <script type="text/javascript" src="static/scripts/jquery-ui.js"></script>
 <script type="text/javascript" src="static/scripts/hash/sha.js"></script>
+<script type="text/javascript" src="static/scripts/AES.js"></script>
 
 <script type="text/javascript" src="static/scripts/login.js"></script>
 <script type="text/javascript" src="static/scripts/dialog.js"></script>
+<script type="text/javascript" src="static/scripts/messaging.js"></script>
 
 <script type="text/javascript">
 var token = '';
@@ -21,6 +23,7 @@ var tokenValid = false;
 var secret = '';
 var pullFailCount = 0;
 var pullFailCount_Max = 3;
+var sendQueue = [];
 
 function doPull(){
     $.post('pull.php', { 'token':token },

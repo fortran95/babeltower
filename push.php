@@ -13,7 +13,11 @@ else {
     if(!$result = $token->read($tokenstr))
         $r = new failure(new Exception('token invalid.',-1));
     else {
-        $r = new success(array('username'=>$token->username));
+        $r = new success(array('username'=>$token->username,
+                               'text'=>aes_decrypt($ciphertext,$token->secret),
+                               'check'=>$check,
+                               'receiver'=>$receiver,
+                        ));
     }
 }
 if(isset($r)) die($r->getJSON());

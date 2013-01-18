@@ -29,7 +29,7 @@ function showDialog(buddy){
           .dialog({
             close: function(){ $(this).remove(); },
             autoOpen: false,
-            buttons: [{text:'speak', click:function(){ dialogAddMessage('test', {'sender':'lucifer'} ); }}],
+            buttons: [{text:'speak', click:function(){ messageCenter.doPushMessage(2,'hello'); }, }],
             minWidth: 400,
             minHeight: 400,
           });
@@ -57,12 +57,6 @@ function showDialog(buddy){
             top: $(bDialogID + '-iframe').css('height'),
             left: $(bDialogID + '-iframe').css('left'),
         }).appendTo(bDialogID);
-/*          .position({
-            my: 'left top',
-            at: 'left bottom',
-            of: bDialogID,
-            collision: 'none',
-        });*/
     }
     
     $('#' + dialogID)
