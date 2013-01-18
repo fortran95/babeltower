@@ -72,8 +72,11 @@ function doPull(){
 
 function loginDo(username,password){
     var nowtime = Math.round(new Date().getTime()/1000);
-    alert(nowtime);
-    $.post('authenticate.php',{ 'username':username, 'password':password },
+
+    var shaObj = new jsSHA(password, "TEXT");
+    var hmac = shaObj.getHMAC(username + nowtime, "TEXT", "SHA-1", "HEX");
+    
+    $.post('authenticate.php',{ 'username':username, 'password':hmac, 'nowtime':nowtime },
             function(j){
                 if(j.type == null)
                     return;
