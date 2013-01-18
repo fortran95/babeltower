@@ -27,4 +27,4 @@ include("$basepath/class/messaging.php");
 include("$basepath/class/AES.php");
 
 include("$basepath/lib/readvar.php");
-?>
+include("$basepath/lib/AES.php");

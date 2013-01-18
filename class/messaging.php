@@ -1,17 +1,22 @@
 <?
 class messaging{
     public function __construct($token){
-        global $database;
+        global $database, $_max_message_length;
         $this->db = $database;
         $this->token = $token;
+        $this->max_message_length = $_max_message_length;
     }
     public function pullMessages(){
         
     }
-    public function pushMessage($buddyid,$message){
+    public function pushMessage($buddyid,$ciphertext){
         if(false !== $this->userExists($buddyid))
             return -1;
 
+        if(strlen($ciphertext) > $this->max_message_length)
+            return -2;
+
+        $message = aes_decrypt($ciphertext,$this->token->secret); 
         
         $sql = "INSERT INTO users(username,
                                   passhash)
