@@ -26,15 +26,31 @@ function dialog(buddyID){
     };
 
     this.constructMessageDisplay = function(message,msgid){
-        if(msgid != undefined)
-            var html = '<div id="local-' + msgid + '" style="word-wrap: break-word; width: 100%">'
-                     + '<strong>我</strong><br />'
-                     + message + '</div>';
-        else
-            var html = '<div style="word-wrap: break-word; width: 100%">'
-                     + '<strong>' + this.buddy + '</strong><br />'
-                     + message + '</div>';
-        return $(html);
+        var outerdiv = $('<div>').css({   
+                        'word-wrap': 'break-word',
+                        'width': '98%',
+                        'padding': '2px',
+                       });
+        var prompting = $('<div>').css({
+                        'font-weight': 'bold',
+                       });
+        var usertext = $('<div>').text(message);
+        if(msgid != undefined){
+            outerdiv.attr('id','local-' + msgid);
+            prompting.text('我')
+                     .css({
+                        'color': '#11aa11',
+                     });
+        } else {
+            prompting.text(this.buddy)
+                     .css({
+                        'color': '#0000cc',
+                     });
+        }
+
+        outerdiv.append(prompting)
+                .append(usertext);
+        return outerdiv;
     };
 
     this.show = function(){
