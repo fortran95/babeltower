@@ -16,6 +16,7 @@
 <script type="text/javascript" src="static/scripts/login.js"></script>
 <script type="text/javascript" src="static/scripts/dialog.js"></script>
 <script type="text/javascript" src="static/scripts/messaging.js"></script>
+<script type="text/javascript" src="static/scripts/userdata.js"></script>
 
 <script type="text/javascript">
 var token = '';
@@ -40,6 +41,11 @@ function doPull(){
                         }
                     }
                 } else {
+                    if(j.data.pulled != null){
+                        $.each(j.data.pulled, function(i,jmsg){
+                            alert(jmsg.text);
+                        });
+                    }
                 }
                 pullFailCount = 0;
             },
