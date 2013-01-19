@@ -44,9 +44,15 @@ function doPull(){
                 } else {
                     if(j.data.pulled != null){
                         $.each(j.data.pulled, function(i,jmsg){
+                            var checkstr = new jsSHA(jmsg.send + jmsg.time + jmsg.text, "TEXT").getHMAC(secret,"TEXT","SHA-1","HEX");
+                            if( checkstr != jmsg.check ){
+                                alert('one message cannot pass check and dropped.');
+                                return;
+                            }
                             if( d = new dialog(jmsg.send) ){
+
                                 message = aes_decrypt(jmsg.text, secret);
-                                d.addDisplay(message);
+                                d.addDisplay({'text':message,'time':jmsg.time});
                             } // TODO for Foreigners, add solution here.
                         });
                     }

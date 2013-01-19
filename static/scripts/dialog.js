@@ -25,6 +25,19 @@ function dialog(buddyID){
         theframe.scrollTop( theframe[0].scrollHeight );
     };
 
+    this.constructDatetimeDisplay = function(showtime){
+        var nowtime = new Date();
+        var cmptime = new Date();
+        cmptime.setTime(showtime * 1000);
+
+        var pureTime = cmptime.getHours() + ':' + cmptime.getMinutes() + ':' + cmptime.getSeconds();
+
+        if(cmptime.getDate() == nowtime.getDate() && cmptime.getMonth() == nowtime.getMonth() && cmptime.getFullYear() == nowtime.getFullYear())    
+            return pureTime;
+        else
+            return cmptime.getFullYear() + '-' + cmptime.getMonth() + '-' + cmptime.getDate() + ' ' + pureTime;
+    }
+
     this.constructMessageDisplay = function(message,msgid){
         var outerdiv = $('<div>').css({   
                         'word-wrap': 'break-word',
@@ -34,16 +47,24 @@ function dialog(buddyID){
         var prompting = $('<div>').css({
                         'font-weight': 'bold',
                        });
-        var usertext = $('<div>').text(message);
+        if(message.time != undefined){
+            var usertext = $('<div>').text(message.text);
+            var showtime = message.time;
+        } else {
+            var usertext = $('<div>').text(message);
+            var showtime = Math.round(new Date().getTime()/1000);
+        }
+
         usertext.html( usertext.html().replace(new RegExp("\n",'g'),"<br />") );
+
         if(msgid != undefined){
             outerdiv.attr('id','local-' + msgid);
-            prompting.text('我')
+            prompting.text('我  ' + this.constructDatetimeDisplay(showtime) )
                      .css({
                         'color': '#11aa11',
                      });
         } else {
-            prompting.text(this.buddy)
+            prompting.text(this.buddy + '  ' + this.constructDatetimeDisplay(showtime) )
                      .css({
                         'color': '#0000cc',
                      });
