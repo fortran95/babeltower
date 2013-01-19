@@ -35,6 +35,7 @@ function dialog(buddyID){
                         'font-weight': 'bold',
                        });
         var usertext = $('<div>').text(message);
+        usertext.html( usertext.html().replace(new RegExp("\n",'g'),"<br />") );
         if(msgid != undefined){
             outerdiv.attr('id','local-' + msgid);
             prompting.text('我')
