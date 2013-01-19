@@ -22,7 +22,7 @@ function dialog(buddyID){
         this.show();
         var theframe = $( this.bDialogID + '-content' );
         theframe.append( this.constructMessageDisplay(message,msgid) );
-        theframe.scrollTop( theframe.css('height') );
+        theframe.scrollTop( theframe[0].scrollHeight );
     };
 
     this.constructMessageDisplay = function(message,msgid){
@@ -61,11 +61,12 @@ function dialog(buddyID){
             }).appendTo(this.bDialogID)
               .css({                
                 position: 'absolute',
-                top: '0',
+                top: '3px',
                 bottom: '22%',
-                left: '0',
-                right: '0',
-                width: '100%',
+                padding: '2px',
+                left: '1px',
+                right: '1px',
+                width: '98%',
                 overflow: 'auto',
             });
 
