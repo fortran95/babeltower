@@ -22,16 +22,16 @@ function dialog(buddyID){
         this.show();
         var theframe = $( this.bDialogID + '-content' );
         theframe.append( this.constructMessageDisplay(message,msgid) );
-//        theframe.scrollTop( theframe.contents().height() );
+        theframe.scrollTop( theframe.css('height') );
     };
 
     this.constructMessageDisplay = function(message,msgid){
         if(msgid != undefined)
-            var html = '<div id="local-' + msgid + '">'
+            var html = '<div id="local-' + msgid + '" style="word-wrap: break-word; width: 100%">'
                      + '<strong>我</strong><br />'
                      + message + '</div>';
         else
-            var html = '<div>'
+            var html = '<div style="word-wrap: break-word; width: 100%">'
                      + '<strong>' + this.buddy + '</strong><br />'
                      + message + '</div>';
         return $(html);
@@ -62,7 +62,7 @@ function dialog(buddyID){
               .css({                
                 position: 'absolute',
                 top: '0',
-                bottom: '20%',
+                bottom: '22%',
                 left: '0',
                 right: '0',
                 width: '100%',
