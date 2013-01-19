@@ -29,7 +29,7 @@ class token{
         if($checksign != $gotsign)
             return false;
 
-        $this->userid = $parts[0];
+        $this->userid = (int)$parts[0];
         $this->username = $parts[1];
         $this->secret = sha1($userInfo['passhash']);
 

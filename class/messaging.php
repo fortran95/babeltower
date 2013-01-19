@@ -1,7 +1,7 @@
 <?
 class messaging{
     public function __construct($token){
-        global $database, $_max_message_length;
+        global $database, $_max_message_length, $_max_messages_eachpull;
         $this->db = $database;
         $this->token = $token;
         $this->max_message_length = $_max_message_length;
@@ -18,8 +18,8 @@ class messaging{
             $delIDs[] = $result['id'];
             $ret[] = array(
                 'send'=>$result['sender'],
-                'time'=>$result['time'],
-                'text'=>aes_encrypt(base64_decode($result['text']), $this->token->secret),
+                'time'=>$result['sendtime'],
+                'text'=>aes_encrypt(base64_decode($result['message']), $this->token->secret),
             );
         }
         $delSQL = implode(',',$delIDs);
