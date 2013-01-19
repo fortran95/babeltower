@@ -43,7 +43,10 @@ function doPull(){
                 } else {
                     if(j.data.pulled != null){
                         $.each(j.data.pulled, function(i,jmsg){
-                            alert(jmsg.text);
+                            if( d = new dialog(jmsg.send) ){
+                                message = aes_decrypt(jmsg.text, secret);
+                                d.addDisplay(message);
+                            } // TODO for Foreigners, add solution here.
                         });
                     }
                 }
@@ -83,8 +86,9 @@ $(function(){
         text: '修改密码',
     }]);
 
-    $('#talkTest').click( function(){ new dialog('test',2).show(); } );
-    $('#fakeRemote').click( function(){ new dialog('test',2).addDisplay('hello'); } );
+    userData.register(2, 'test');
+    $('#talkTest').click( function(){ new dialog(2).show(); } );
+    $('#fakeRemote').click( function(){ new dialog(2).addDisplay('hello'); } );
 
     engine();
 });

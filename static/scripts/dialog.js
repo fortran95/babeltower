@@ -1,7 +1,10 @@
-function dialog(buddy, buddyID){
-    this.dialogID = 'dialog-' + $.trim(buddy.toLowerCase());
+function dialog(buddyID){
+    this.buddy = userData.names[buddyID];
+    if(this.buddy == undefined)
+        return false;
+
+    this.dialogID = 'dialog-' + $.trim(this.buddy.toLowerCase());
     this.bDialogID = '#' + this.dialogID;
-    this.buddy = buddy;
     this.buddyID = buddyID;
 
     this.say = function(){
@@ -35,10 +38,9 @@ function dialog(buddy, buddyID){
     };
 
     this.show = function(){
-        var buddy = this.buddy;
         var buddyID = this.buddyID;
         this.speakCallback = function(){
-            new dialog(buddy, buddyID).say();
+            new dialog(buddyID).say();
         }
 
         if($(this.bDialogID).size() == 0){
