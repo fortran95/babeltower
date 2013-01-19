@@ -16,10 +16,12 @@ class messaging{
         $ret = array();
         foreach($userq as $result){
             $delIDs[] = $result['id'];
+            $ciphertext = aes_encrypt(base64_decode($result['message']), $this->token->secret);
             $ret[] = array(
                 'send'=>$result['sender'],
                 'time'=>$result['sendtime'],
-                'text'=>aes_encrypt(base64_decode($result['message']), $this->token->secret),
+                'text'=>$ciphertext,
+                'check'=>hash_hmac('sha1',$result['sender'] . $result['sendtime'] . $ciphertext,$this->token->secret),
             );
         }
         $delSQL = implode(',',$delIDs);
