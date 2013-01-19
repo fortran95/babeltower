@@ -57,38 +57,27 @@ function dialog(buddyID){
               });
 
             $('<div>',{
-                id: this.dialogID + '-pane',
-            }).appendTo(this.bDialogID)
-              .css({
-                position: 'absolute',
-                float: 'left',
-                overflow: 'auto',
-                width: '99%',
-                background: '#F00',
-            }).position({
-                my: 'left top',
-                at: 'left top',
-                of: this.bDialogID,
-                collision: 'none',
-                within: $(this.bDialogID),
-            });
-
-            $('<div>',{
                 id: this.dialogID + '-content',
-            }).appendTo(this.bDialogID + '-pane')
-              .css({
+            }).appendTo(this.bDialogID)
+              .css({                
+                position: 'absolute',
+                top: '0',
+                bottom: '20%',
+                left: '0',
+                right: '0',
                 width: '100%',
-                background: '#0F0',
+                overflow: 'auto',
             });
 
             $('<textarea>',{
-                width: '98%',
+                width: '99%',
                 id: this.dialogID + '-textarea',
             }).css({
                 resize: 'none',
                 position: 'absolute',
-                top: $(this.bDialogID + '-iframe').css('height'),
-                left: $(this.bDialogID + '-iframe').css('left'),
+                left: '0',
+                bottom: '0',
+                height: '20%',
             }).appendTo(this.bDialogID);
         }
         
