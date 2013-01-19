@@ -3,26 +3,26 @@ function dialog(buddyID){
     if(this.buddy == undefined)
         return false;
 
-    this.dialogID = 'dialog-' + $.trim(this.buddy.toLowerCase());
+    this.dialogID = 'dialog-' + buddyID;
     this.bDialogID = '#' + this.dialogID;
     this.buddyID = buddyID;
 
     this.say = function(){
-        var message = $.trim( $(this.bDialogID + ' textarea' ).val());
+        var message = $.trim( $(this.bDialogID + '-textarea' ).val());
         if(message == '' || message.length > 500)
             return;
 
         var msgid = messageCenter.push(this.buddyID, message);
         this.addDisplay(message, msgid);
 
-        $(this.bDialogID + ' textarea').val('');
+        $(this.bDialogID + '-textarea').val('');
     };
 
     this.addDisplay = function(message,msgid){
         this.show();
-        var theframe = $( this.bDialogID + '-iframe' );
-        theframe.contents().find('body').append( this.constructMessageDisplay(message,msgid) );
-        theframe.contents().scrollTop( theframe.contents().height() );
+        var theframe = $( this.bDialogID + '-content' );
+        theframe.append( this.constructMessageDisplay(message,msgid) );
+//        theframe.scrollTop( theframe.contents().height() );
     };
 
     this.constructMessageDisplay = function(message,msgid){
@@ -51,18 +51,20 @@ function dialog(buddyID){
               .dialog({
                 close: function(){ $(this).remove(); },
                 autoOpen: false,
-                buttons: [{text:'speak', click: this.speakCallback, }],
+                buttons: [{text:'speak', click: this.speakCallback, },],
                 minWidth: 400,
                 minHeight: 400,
               });
 
-            $('<iframe>',{
-                width: '99%',
-                height: '85%',
-                id: this.dialogID + '-iframe',
+            $('<div>',{
+                id: this.dialogID + '-pane',
             }).appendTo(this.bDialogID)
               .css({
                 position: 'absolute',
+                float: 'left',
+                overflow: 'auto',
+                width: '99%',
+                background: '#F00',
             }).position({
                 my: 'left top',
                 at: 'left top',
@@ -71,8 +73,17 @@ function dialog(buddyID){
                 within: $(this.bDialogID),
             });
 
+            $('<div>',{
+                id: this.dialogID + '-content',
+            }).appendTo(this.bDialogID + '-pane')
+              .css({
+                width: '100%',
+                background: '#0F0',
+            });
+
             $('<textarea>',{
                 width: '98%',
+                id: this.dialogID + '-textarea',
             }).css({
                 resize: 'none',
                 position: 'absolute',
