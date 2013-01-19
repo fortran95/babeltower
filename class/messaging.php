@@ -5,9 +5,28 @@ class messaging{
         $this->db = $database;
         $this->token = $token;
         $this->max_message_length = $_max_message_length;
+        $this->max_messages_eachpull = $_max_messages_eachpull;
     }
-    public function pullMessages(){
-        
+    public function pullMessages(){        
+        $userid = $this->token->userid;
+        $userq = $this->db->querySQL("SELECT * FROM single
+                                      WHERE receiver='{$userid}'
+                                      LIMIT {$this->max_messages_eachpull}");
+        $delIDs = array();
+        $ret = array();
+        foreach($userq as $result){
+            $delIDs[] = $result['id'];
+            $ret[] = array(
+                'send'=>$result['sender'],
+                'time'=>$result['time'],
+                'text'=>aes_encrypt(base64_decode($result['text']), $this->token->secret),
+            );
+        }
+        $delSQL = implode(',',$delIDs);
+        $delSQL = "DELETE FROM single WHERE id IN ($delSQL)";
+        $this->db->doSQL($delSQL);
+
+        return $ret;
     }
     public function pushMessage($buddyid,$ciphertext,$check){
         if(!$this->userExists($buddyid))
