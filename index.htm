@@ -92,6 +92,7 @@ $(function(){
         click: function(){ alert('尚未制作，请联系作者。'); },
         text: '修改密码',
     }]);
+    $('#jsDisableNotice').css({'display':'none'});
 
     userData.register(2, 'test');
     userData.register(3, 'test2');
@@ -107,10 +108,13 @@ body{
     font: 62.5% "Trebuchet MS", sans-serif;
     margin: 5px;
 }
+.underlying{
+    display: none;
+}
 </style>
 </head>
 <body>
-<div id="underlying">
+<div id="underlying" class="underlying">
 
 <div id="loginForm" title="登录">
 <div name="message"></div>
@@ -125,6 +129,9 @@ body{
 <button id="talkTest">和test聊天</button>
 <button id="talkTest2">和test2聊天</button>
 
+</div>
+<div id="jsDisableNotice" class="nojs">
+聊天系统需要JavaScript的支持。您的浏览器看来没有启用这一功能。
 </div>
 </body>
 </html>
