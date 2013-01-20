@@ -18,6 +18,7 @@
 <script type="text/javascript" src="static/scripts/dialog.js"></script>
 <script type="text/javascript" src="static/scripts/messaging.js"></script>
 <script type="text/javascript" src="static/scripts/userdata.js"></script>
+<script type="text/javascript" src="static/scripts/ui.js"></script>
 
 <script type="text/javascript">
 var token = '';
@@ -47,31 +48,7 @@ function engine(j){
 }
 
 $(function(){
-    $('#loginForm,#changePwdForm').dialog({        
-        autoOpen: false,
-        modal: true,
-        resizable: false,
-    });
-    $('#loginForm').dialog('option', 'buttons', [{
-        click: function(){ loginDo($('#loginForm input[name=username]').val(), $('#loginForm input[name=password]').val()); },
-        text: '登录',
-    }]);
-    $('#changePwdForm').dialog('option', 'buttons', [{
-        click: function(){ alert('尚未制作，请联系作者。'); },
-        text: '修改密码',
-    }]);
-    $('#jsDisableNotice').css({'display':'none'});
-    $('button').button();
-
-    $('#talkTest').click( function(){ new dialog(2).show(); } );
-    $('#talkTest2').click( function(){ new dialog(3).show(); } );
-    $('#testList').click( function(){ userData.refresh(); });
-    $('#addTest2').click( function(){
-        $.post('buddy.php?action=add',{'token':token, 'id':3},function(j){
-            alert(j.type);
-        },'json');
-    });
-
+    UI.initialize();
     $.post('traffic_light.php',{'p':'green'},engine,'json');
 });
 </script>
@@ -102,10 +79,15 @@ body{
 确认新密码<input name="newpwd2" type="password" required/>
 </div>
 
-<button id="talkTest">和test聊天</button>
-<button id="talkTest2">和test2聊天</button>
-<button id="testList">拉取列表</button>
-<button id="addTest2">加test2为好友</button>
+<div id="mainAccordion">
+    <h3>好友列表</h3>
+    <div id="buddyList">
+        <button id="talkTest">和test聊天</button>
+        <button id="talkTest2">和test2聊天</button>
+        <button id="testList">拉取列表</button>
+        <button id="addTest2">加test2为好友</button>
+    </div>
+</div>
 
 </div>
 <div id="jsDisableNotice" class="noFunction">
