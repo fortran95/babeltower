@@ -21,12 +21,27 @@ UI.initialize = function(){
         heightStyle: 'fill',
     });
 
-    $('#talkTest').click( function(){ new dialog(2).show(); } );
-    $('#talkTest2').click( function(){ new dialog(3).show(); } );
+    $('#buddyList').menu();
+
     $('#testList').click( function(){ userData.refresh(); });
     $('#addTest2').click( function(){
         $.post('buddy.php?action=add',{'token':token, 'id':3},function(j){
             alert(j.type);
         },'json');
     });
+};
+
+UI.buddy = {};
+UI.buddy.refresh = function(){
+    // Called by userData.refresh
+    $('#buddyList *').remove();
+    for(userid in userData.names){
+        $('<li>').appendTo('#buddyList')
+                 .append($('<a>',{
+                            href: '#'
+                         }).text(userData.names[userid])
+                           .bind('click', userid, function(e){ new dialog(e.data).show(); } )
+                         );
+    }
+    $('#buddyList').menu();
 }

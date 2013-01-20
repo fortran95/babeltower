@@ -23,5 +23,6 @@ userData.refresh = function(){
                 userData.loadList(liststr);
             }
         }
+        UI.buddy.refresh();
     },'json');
 }
