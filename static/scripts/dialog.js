@@ -84,9 +84,9 @@ function dialog(buddyID){
     };
 
     this.onTextareaKeypress = function(e){
-        if(e.ctrlKey && e.which == 10){
-            new dialog(e.data).say();
-        }
+        if(e.ctrlKey)
+            if(e.which == 10 || e.which == 13)
+                new dialog(e.data).say();
     }
     
     this.close = function(){
