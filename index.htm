@@ -49,7 +49,8 @@ function engine(j){
 
 $(function(){
     UI.initialize();
-    $.post('traffic_light.php',{'p':'green'},engine,'json');
+
+    $.post('traffic_light.php',{'p':'green'},engine,'json'); // Fire the engine.
 });
 </script>
 
@@ -63,10 +64,18 @@ body{
 }
 .underlying{
     display: none;
+}
+.imgLogo{
+    position: absolute;
+    right: 100px;
+    top: 50px;
+}
+.mainAccordion{
     margin-top: 150px;
     margin-left: 100px;
     margin-right: 100px;
 }
+
 </style>
 </head>
 <body>
@@ -82,7 +91,9 @@ body{
 确认新密码<input name="newpwd2" type="password" required/>
 </div>
 
-<div id="mainAccordion">
+<img class="imgLogo" src="static/logo.gif"></img>
+
+<div id="mainAccordion" class="mainAccordion">
     <h3>好友列表</h3>
     <div id="buddyList">
         <button id="testList">拉取列表</button>

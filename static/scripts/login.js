@@ -28,6 +28,8 @@ function loginDo(username,password){
                     token = j.data.token;
                     var tokenAry = token.split(':');
                     userData.register(tokenAry[0],tokenAry[1]);
+
+                    userData.refresh();
                 }
             },
            'json');
