@@ -11,7 +11,7 @@ class friendship{
         $userq = $this->db->querySQL("SELECT * FROM friendship
                                       WHERE userid='{$userid}'");
         if(count($userq) < 1){
-            $sql = "INSERT INTO frienship(userid,data) VALUES('$userid','')";
+            $sql = "INSERT INTO friendship(userid,data) VALUES('$userid','')";
             $this->db->doSQL($sql);
             $ret = '';
         } else
@@ -19,6 +19,8 @@ class friendship{
         return $raw ? $ret : json_decode($ret,True);
     }
     public function add($userid){
+        if($userid == $this->token->userid)
+            return true;
         if(!$newuser = $this->token->getUserInfo($userid))
             return -1;
         $data = $this->query(False);

@@ -104,6 +104,16 @@ $(function(){
     userData.register(3, 'test2');
     $('#talkTest').click( function(){ new dialog(2).show(); } );
     $('#talkTest2').click( function(){ new dialog(3).show(); } );
+    $('#testList').click( function(){
+        $.post('buddy.php?action=list',{'token':token},function(j){
+            alert(j.type);
+        },'json');
+    });
+    $('#addTest2').click( function(){
+        $.post('buddy.php?action=add',{'token':token, 'id':3},function(j){
+            alert(j.type);
+        },'json');
+    });
 
     $.post('traffic_light.php',{'p':'green'},engine,'json');
 });
@@ -134,6 +144,8 @@ body{
 
 <button id="talkTest">和test聊天</button>
 <button id="talkTest2">和test2聊天</button>
+<button id="testList">拉取列表</button>
+<button id="addTest2">加test2为好友</button>
 
 </div>
 <div id="jsDisableNotice" class="noFunction">
