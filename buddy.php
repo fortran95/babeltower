@@ -14,7 +14,10 @@ else {
         $f = new friendship($token);
         switch($action){
             case('list'):
-                $r = new success(array('list'=>$f->query(True)));
+                $ciphertext = aes_encrypt($f->query(True), $token->secret);
+                $r = new success(array('list'=>$ciphertext,
+                                       'check'=>hash_hmac('sha1',$ciphertext,$token->secret),
+                                ));
                 break;
             case('add'):
                 $buddyid = request_var('id',false);

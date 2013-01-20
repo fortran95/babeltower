@@ -26,6 +26,8 @@ function loginDo(username,password){
                     $('#loginForm').dialog('close');
                     tokenValid = true;
                     token = j.data.token;
+                    var tokenAry = token.split(':');
+                    userData.register(tokenAry[0],tokenAry[1]);
                 }
             },
            'json');

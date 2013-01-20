@@ -27,12 +27,13 @@ class friendship{
         if(count($data) > $this->max_buddies_limit)
             return -2;
 
-        $userid = (int)$userid;
+        $userid = sprintf("%d", $userid);
         $data[$userid] = $newuser['username'];
         return $this->updateData($data);
     }
     public function remove($userid){
         $data = $this->query(False);
+        $userid = sprintf("%d", $userid);
         if(!isset($data[$userid]))
             return false;
         unset($data[$userid]);

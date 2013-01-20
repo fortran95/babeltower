@@ -104,11 +104,7 @@ $(function(){
     userData.register(3, 'test2');
     $('#talkTest').click( function(){ new dialog(2).show(); } );
     $('#talkTest2').click( function(){ new dialog(3).show(); } );
-    $('#testList').click( function(){
-        $.post('buddy.php?action=list',{'token':token},function(j){
-            alert(j.type);
-        },'json');
-    });
+    $('#testList').click( function(){ userData.refresh(); });
     $('#addTest2').click( function(){
         $.post('buddy.php?action=add',{'token':token, 'id':3},function(j){
             alert(j.type);
