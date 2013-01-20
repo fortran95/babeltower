@@ -6,4 +6,3 @@ $_max_message_length = 1024;
 $_max_messages_eachpull = 5;
 
 $_max_buddies_per_user = 1000;
-?>
