@@ -6,6 +6,7 @@ var messageCenter = {};
 messageCenter.sendingQueue = [];
 messageCenter.sentQueue = [];
 messageCenter.IDCounter = 0;
+messageCenter.pullFailCount = 0;
 
 messageCenter.confirmSent = function(msgid){
     for(i=0;i<messageCenter.sentQueue.length;i++)
@@ -63,4 +64,37 @@ messageCenter.pop = function(){
         },'json');
     }
     return messageCenter.sendingQueue.length;
+}
+
+messageCenter.pull = function(){
+    $.post('pull.php', {'token':token}, messageCenter.pullHandler, 'json');
+}
+messageCenter.pullHandler = function(j){
+    if(j.type != 'success'){
+        if(j.error != null){
+            switch(j.error.code){
+                case(-1):
+                    tokenValid = false;
+                    loginSetInfo('会话过期，或被服务器中止。','error');
+                    break;
+                default:
+                    break;
+            }
+        }
+    } else {
+        if(j.data.pulled != null){
+            $.each(j.data.pulled, function(i,jmsg){
+                var checkstr = new jsSHA(jmsg.send + jmsg.time + jmsg.text, "TEXT").getHMAC(secret,"TEXT","SHA-1","HEX");
+                if( checkstr != jmsg.check ){
+                    alert('one message cannot pass check and dropped.');
+                    return;
+                }
+                if( d = new dialog(jmsg.send) ){
+                    message = aes_decrypt(jmsg.text, secret);
+                    d.addDisplay({'text':message,'time':jmsg.time});
+                } // TODO for Foreigners, add solution here.
+            });
+        }
+    }
+    messageCenter.pullFailCount = 0;
 }
