@@ -26,16 +26,24 @@ function dialog(buddyID){
     };
 
     this.constructDatetimeDisplay = function(showtime){
+        this.zfiller = function(src,len){
+            return ("0000" + src).slice(-len);
+        }
+
         var nowtime = new Date();
         var cmptime = new Date();
         cmptime.setTime(showtime * 1000);
 
-        var pureTime = cmptime.getHours() + ':' + cmptime.getMinutes() + ':' + cmptime.getSeconds();
+        var pureTime = this.zfiller(cmptime.getHours(),2)
+                     + ':' + this.zfiller(cmptime.getMinutes(),2)
+                     + ':' + this.zfiller(cmptime.getSeconds(),2);
 
         if(cmptime.getDate() == nowtime.getDate() && cmptime.getMonth() == nowtime.getMonth() && cmptime.getFullYear() == nowtime.getFullYear())    
             return pureTime;
         else
-            return cmptime.getFullYear() + '-' + cmptime.getMonth() + '-' + cmptime.getDate() + ' ' + pureTime;
+            return this.zfiller(cmptime.getFullYear(),4)
+                   + '-' + this.zfiller(cmptime.getMonth() + 1,2)
+                   + '-' + this.zfiller(cmptime.getDate(),2) + ' ' + pureTime;
     }
 
     this.constructMessageDisplay = function(message,msgid){
@@ -80,11 +88,18 @@ function dialog(buddyID){
             new dialog(e.data).say();
         }
     }
+    
+    this.close = function(){
+        $(this.bDialogID).remove();
+    }
 
     this.show = function(){
         var buddyID = this.buddyID;
-        this.speakCallback = function(){
+        this.btnSpeakCallback = function(){
             new dialog(buddyID).say();
+        }
+        this.btnCloseCallback = function(){
+            new dialog(buddyID).close();
         }
 
         if($(this.bDialogID).size() == 0){
@@ -93,9 +108,10 @@ function dialog(buddyID){
                 title: '与 ' + $.trim(this.buddy.toLowerCase()) + ' 的聊天',
             }).appendTo('body')
               .dialog({
-                close: function(){ $(this).remove(); },
+                close: this.close,
                 autoOpen: false,
-                buttons: [{text:'speak', click: this.speakCallback, },],
+                buttons: [{text:'关闭', click: this.btnCloseCallback, },
+                          {text:'发送(<Ctrl>+<Enter>)', click: this.btnSpeakCallback, },],
                 minWidth: 400,
                 minHeight: 400,
               });
