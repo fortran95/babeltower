@@ -22,6 +22,7 @@ function loginDo(username,password){
                         desc = '未知错误';
                     loginSetInfo(desc,'error');
                 } else {
+                    $('#underlying').css('display','block');
                     $('#loginForm').dialog('close');
                     tokenValid = true;
                     token = j.data.token;
@@ -34,6 +35,7 @@ function loginShow(){
     tokenValid = false;
     token = '';
     $('#loginForm').dialog('open');
+    $('#underlying').css('display','none');
 }
 function loginSetInfo(info,type){
     $('#loginForm div[name=message]')
