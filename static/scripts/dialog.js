@@ -75,6 +75,12 @@ function dialog(buddyID){
         return outerdiv;
     };
 
+    this.onTextareaKeypress = function(e){
+        if(e.ctrlKey && e.which == 10){
+            new dialog(e.data).say();
+        }
+    }
+
     this.show = function(){
         var buddyID = this.buddyID;
         this.speakCallback = function(){
@@ -109,7 +115,7 @@ function dialog(buddyID){
             });
 
             $('<textarea>',{
-                width: '99%',
+                width: '98%',
                 id: this.dialogID + '-textarea',
             }).css({
                 resize: 'none',
@@ -117,7 +123,8 @@ function dialog(buddyID){
                 left: '0',
                 bottom: '0',
                 height: '20%',
-            }).appendTo(this.bDialogID);
+            }).appendTo(this.bDialogID)
+              .bind('keypress', this.buddyID, this.onTextareaKeypress );
         }
         
         $(this.bDialogID)
