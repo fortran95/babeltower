@@ -63,7 +63,13 @@ function doPull(){
 }
 
 
-function engine(){
+function engine(j){
+    if(j != undefined){
+        if(j.status != 'green')
+            return;
+        else
+            $('#ajaxDisableNotice').css({'display':'none'});
+    }
     if(tokenValid == false || pullFailCount >= pullFailCount_Max){
         loginShow();
         setTimeout(engine,1000);
@@ -99,7 +105,7 @@ $(function(){
     $('#talkTest').click( function(){ new dialog(2).show(); } );
     $('#talkTest2').click( function(){ new dialog(3).show(); } );
 
-    engine();
+    $.getJSON('traffic_light.php','',engine);
 });
 </script>
 
@@ -130,7 +136,10 @@ body{
 <button id="talkTest2">和test2聊天</button>
 
 </div>
-<div id="jsDisableNotice" class="nojs">
+<div id="jsDisableNotice" class="noFunction">
+请等待页面加载完毕使用。如果长时间没有显示，请确认您的浏览器已经启用JavaScript。
+</div>
+<div id="ajaxDisableNotice" class="noFunction">
 聊天系统需要JavaScript的支持。您的浏览器看来没有启用这一功能。
 </div>
 </body>
