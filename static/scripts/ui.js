@@ -18,10 +18,10 @@ UI.initialize = function(){
     $('button').button();
 
     $('#mainAccordion').accordion({
-        heightStyle: 'fill',
+        heightStyle: 'content',
     });
 
-    $('#buddyList').menu();
+    $('#buddyList').css({height: '50%'});
 
     $('#testList').click( function(){ userData.refresh(); });
     $('#addTest2').click( function(){
@@ -34,14 +34,21 @@ UI.initialize = function(){
 UI.buddy = {};
 UI.buddy.refresh = function(){
     // Called by userData.refresh
-    $('#buddyList *').remove();
+    $('#buddyList ul#menu').remove();
+
+    $('<ul>',{
+        id: 'menu',
+    }).appendTo('#buddyList');
+
     for(userid in userData.names){
-        $('<li>').appendTo('#buddyList')
+        $('<li>').appendTo('#buddyList ul#menu')
                  .append($('<a>',{
                             href: '#'
                          }).text(userData.names[userid])
                            .bind('click', userid, function(e){ new dialog(e.data).show(); } )
                          );
     }
-    $('#buddyList').menu();
+    $('#buddyList ul#menu').menu();
+
+    $('#mainAccordion').accordion('refresh');
 }

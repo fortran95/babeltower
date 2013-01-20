@@ -56,13 +56,16 @@ $(function(){
 <style>
 body{
     font: 62.5% "Trebuchet MS", sans-serif;
-    margin: 5px;
+    margin: 0;
     background-color:#000000;
     background-image:url('static/gradient.jpg');
     background-repeat:repeat-x;
 }
 .underlying{
     display: none;
+    margin-top: 150px;
+    margin-left: 100px;
+    margin-right: 100px;
 }
 </style>
 </head>
@@ -81,11 +84,9 @@ body{
 
 <div id="mainAccordion">
     <h3>好友列表</h3>
-    <div>
+    <div id="buddyList">
         <button id="testList">拉取列表</button>
         <button id="addTest2">加test2为好友</button>
-        <ul id="buddyList">
-        </ul>
     </div>
 </div>
 
