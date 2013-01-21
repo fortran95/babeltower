@@ -108,7 +108,7 @@ function dialog(buddyID){
                 title: '与 ' + $.trim(this.buddy.toLowerCase()) + ' 的聊天',
             }).appendTo('body')
               .dialog({
-                close: this.close,
+                close: this.btnCloseCallback,
                 autoOpen: false,
                 buttons: [{text:'关闭', click: this.btnCloseCallback, },
                           {text:'发送(<Ctrl>+<Enter>)', click: this.btnSpeakCallback, },],

@@ -70,10 +70,12 @@ body{
     right: 100px;
     top: 50px;
 }
+.buddyMenuBox{
+    overflow: auto;
+    width: 98%;
+}
 .mainAccordion{
-    margin-top: 150px;
-    margin-left: 100px;
-    margin-right: 100px;
+    height: 98%;
 }
 
 </style>
@@ -90,16 +92,19 @@ body{
 新密码<input name="newpwd" type="password" required/><br />
 确认新密码<input name="newpwd2" type="password" required/>
 </div>
+<div id="contactForm" title="联系列表">
+    <div id="mainAccordion" class="mainAccordion">
+        <h3>好友列表</h3>
+        <div id="buddyList">
+            <div id="buddyMenuBox" class="buddyMenuBox">
+            </div>
+        </div>
+    </div>
+</div>
 
 <img class="imgLogo" src="static/logo.gif"></img>
 
-<div id="mainAccordion" class="mainAccordion">
-    <h3>好友列表</h3>
-    <div id="buddyList">
-        <button id="testList">拉取列表</button>
-        <button id="addTest2">加test2为好友</button>
-    </div>
-</div>
+
 
 </div>
 <div id="jsDisableNotice" class="noFunction">

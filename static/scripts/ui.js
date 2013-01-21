@@ -1,11 +1,21 @@
 var UI = {};
 
 UI.initialize = function(){
-    $('#loginForm,#changePwdForm').dialog({        
+    $('#loginForm,#changePwdForm').dialog({
         autoOpen: false,
         modal: true,
         resizable: false,
     });
+    $('#contactForm').dialog({
+        autoOpen: false,
+        modal: false,
+        resizable: true,
+        resize: function(){ $('#mainAccordion').accordion('refresh'); },
+        minHeight: 400,
+        minWidth: 300,
+        position: { my: 'left top', at: 'left+50 top+50', of: 'body' },
+    });
+
     $('#loginForm').dialog('option', 'buttons', [{
         click: function(){ loginDo($('#loginForm input[name=username]').val(), $('#loginForm input[name=password]').val()); },
         text: '登录',
@@ -14,16 +24,16 @@ UI.initialize = function(){
         click: function(){ alert('尚未制作，请联系作者。'); },
         text: '修改密码',
     }]);
+    
     $('#jsDisableNotice').css({'display':'none'});
     $('button').button();
 
     $('#mainAccordion').accordion({
-        heightStyle: 'content',
+        heightStyle: 'fill',
     });
 
     $('#buddyList').css({height: '50%'});
 
-    $('#testList').click( function(){ userData.refresh(); });
     $('#addTest2').click( function(){
         $.post('buddy.php?action=add',{'token':token, 'id':3},function(j){
             alert(j.type);
@@ -34,11 +44,11 @@ UI.initialize = function(){
 UI.buddy = {};
 UI.buddy.refresh = function(){
     // Called by userData.refresh
-    $('#buddyList ul#menu').remove();
+    $('#buddyMenuBox ul#menu').remove();
 
     $('<ul>',{
         id: 'menu',
-    }).appendTo('#buddyList');
+    }).appendTo('#buddyMenuBox');
 
     for(userid in userData.names){
         $('<li>').appendTo('#buddyList ul#menu')
@@ -50,5 +60,6 @@ UI.buddy.refresh = function(){
     }
     $('#buddyList ul#menu').menu();
 
+    $('#contactForm').dialog('open');
     $('#mainAccordion').accordion('refresh');
 }
